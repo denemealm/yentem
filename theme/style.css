@@ -1,0 +1,55 @@
+/*
+Theme Name: Demo Theme Builder
+Theme URI: https://example.com
+Author: Yentem
+Author URI: https://example.com
+Description: Customizable demo theme - Choose your header, hero, content section and footer styles from the frontend.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: demo-theme-builder
+*/
+
+/* RESET & BASE */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:16px/1.5 system-ui,sans-serif;background:#f8fafc;color:#0f172a}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{font:inherit;border:0;background:0;cursor:pointer}
+img{max-width:100%;display:block}
+
+/* VARIABLES */
+:root{
+    --primary:#2563eb;
+    --dark:#0f172a;
+    --gray:#64748b;
+    --light:#f1f5f9;
+    --container:min(94vw,1200px)
+}
+
+/* Container */
+.container{width:var(--container);margin:0 auto}
+
+/* Common Styles */
+.section{padding:4rem 0}
+.section-header{display:flex;justify-content:space-between;align-items:center;border-left:4px solid var(--primary);padding-left:15px;margin-bottom:2rem}
+.section-title{font:800 1.5rem/1 system-ui;margin:0}
+.section-link{color:var(--primary);font:600 .9rem/1 system-ui}
+.section-link:hover{text-decoration:underline}
+
+/* Grid Layouts */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:30px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+
+/* Responsive */
+@media(max-width:900px){
+    .grid-3{grid-template-columns:repeat(2,1fr)}
+    .grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+    .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+}
