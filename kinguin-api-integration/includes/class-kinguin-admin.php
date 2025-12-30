@@ -42,38 +42,16 @@ class Kinguin_Admin {
      * Admin menüsü ekle
      */
     public function add_admin_menu() {
-        // Ana menü ekle (Custom Post Type yoksa bu çalışır)
+        // Üst seviye menü
         add_menu_page(
-            'Kinguin API',
-            'Kinguin API',
-            'manage_options',
-            'kinguin-api',
-            array($this, 'render_settings_page'),
-            'dashicons-games',
-            26
+            'Kinguin Ayarları',           // Page title
+            'Kinguin',                     // Menu title
+            'manage_options',              // Capability
+            'kinguin-settings',            // Menu slug
+            array($this, 'render_settings_page'), // Callback
+            'dashicons-games',             // Icon
+            58                             // Position
         );
-
-        // Ayarlar alt menüsü
-        add_submenu_page(
-            'kinguin-api',
-            'Ayarlar',
-            'Ayarlar',
-            'manage_options',
-            'kinguin-api',
-            array($this, 'render_settings_page')
-        );
-
-        // Eğer CPT kayıtlıysa ona da ekle
-        if (post_type_exists('kinguin_product')) {
-            add_submenu_page(
-                'edit.php?post_type=kinguin_product',
-                'Kinguin Ayarları',
-                'Ayarlar',
-                'manage_options',
-                'kinguin-settings',
-                array($this, 'render_settings_page')
-            );
-        }
     }
 
     /**
