@@ -84,6 +84,9 @@ class Kinguin_API_Integration {
         // Frontend hooks
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_filter('template_include', array($this, 'template_loader'));
+
+        // Shortcode
+        add_shortcode('kinguin_products', array($this, 'products_shortcode'));
     }
 
     /**
@@ -153,6 +156,94 @@ class Kinguin_API_Integration {
         }
 
         return $template;
+    }
+
+    /**
+     * Shortcode: [kinguin_products]
+     */
+    public function products_shortcode($atts) {
+        $atts = shortcode_atts(array(
+            'limit' => 12,
+            'platform' => '',
+            'genre' => '',
+        ), $atts, 'kinguin_products');
+
+        $args = array(
+            'post_type' => 'kinguin_product',
+            'posts_per_page' => intval($atts['limit']),
+            'post_status' => 'publish',
+        );
+
+        if (!empty($atts['platform'])) {
+            $args['tax_query'][] = array(
+                'taxonomy' => 'kinguin_platform',
+                'field' => 'slug',
+                'terms' => sanitize_text_field($atts['platform']),
+            );
+        }
+
+        if (!empty($atts['genre'])) {
+            $args['tax_query'][] = array(
+                'taxonomy' => 'kinguin_genre',
+                'field' => 'slug',
+                'terms' => sanitize_text_field($atts['genre']),
+            );
+        }
+
+        $query = new WP_Query($args);
+
+        ob_start();
+
+        if ($query->have_posts()) {
+            echo '<div class="kinguin-products-grid">';
+            while ($query->have_posts()) {
+                $query->the_post();
+                $price = get_post_meta(get_the_ID(), '_kinguin_price', true);
+                $currency = get_post_meta(get_the_ID(), '_kinguin_currency', true);
+                $platform = get_post_meta(get_the_ID(), '_kinguin_platform', true);
+                $stock = get_post_meta(get_the_ID(), '_kinguin_stock', true);
+                ?>
+                <article class="kinguin-product-card">
+                    <a href="<?php the_permalink(); ?>" class="kinguin-product-link">
+                        <div class="kinguin-product-image">
+                            <?php if (has_post_thumbnail()): ?>
+                                <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
+                            <?php else: ?>
+                                <div class="kinguin-no-image">
+                                    <span class="dashicons dashicons-games"></span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($stock && $stock > 0): ?>
+                                <span class="kinguin-badge kinguin-badge-stock">Stokta</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="kinguin-product-info">
+                            <?php if ($platform): ?>
+                                <span class="kinguin-platform"><?php echo esc_html($platform); ?></span>
+                            <?php endif; ?>
+                            <h2 class="kinguin-product-title"><?php the_title(); ?></h2>
+                            <div class="kinguin-product-footer">
+                                <?php if ($price): ?>
+                                    <span class="kinguin-price">
+                                        <?php echo number_format($price, 2, ',', '.'); ?>
+                                        <small><?php echo esc_html($currency ?: 'EUR'); ?></small>
+                                    </span>
+                                <?php endif; ?>
+                                <span class="kinguin-view-btn">Detaylar →</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                <?php
+            }
+            echo '</div>';
+        } else {
+            echo '<p>Ürün bulunamadı.</p>';
+        }
+
+        wp_reset_postdata();
+
+        return ob_get_clean();
     }
 
     /**
