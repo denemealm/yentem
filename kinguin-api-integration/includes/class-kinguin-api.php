@@ -19,7 +19,7 @@ class Kinguin_API {
     /**
      * API Base URL
      */
-    private $api_base = 'https://gateway.kinguin.net/esa/api/v2';
+    private $api_base = 'https://gateway.kinguin.net/esa/api';
 
     /**
      * API Key
@@ -145,7 +145,7 @@ class Kinguin_API {
         $params = wp_parse_args($args, $defaults);
 
         // API isteği
-        $response = $this->make_request('/products', $params);
+        $response = $this->make_request('/v1/products', $params);
 
         if (is_wp_error($response)) {
             return $response;
@@ -173,7 +173,7 @@ class Kinguin_API {
         }
 
         // API isteği
-        $response = $this->make_request('/products/' . $product_id);
+        $response = $this->make_request('/v1/products/' . $product_id);
 
         if (is_wp_error($response)) {
             return $response;
@@ -200,7 +200,7 @@ class Kinguin_API {
         }
 
         // API isteği
-        $response = $this->make_request('/products/categories');
+        $response = $this->make_request('/v1/products/categories');
 
         if (is_wp_error($response)) {
             return $response;
