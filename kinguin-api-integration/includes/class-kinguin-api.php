@@ -19,7 +19,7 @@ class Kinguin_API {
     /**
      * API Base URL
      */
-    private $api_base = 'https://gateway.kinguin.net/esa/api';
+    private $api_base = 'https://gateway.kinguin.net/esa/api/v1';
 
     /**
      * API Key
@@ -138,14 +138,14 @@ class Kinguin_API {
         $defaults = array(
             'limit' => 50,
             'page' => 1,
-            'sortBy' => 'popularity', // popularity, price, name
+            'sortBy' => 'updatedAt', // kinguinId veya updatedAt
             'sortType' => 'desc',
         );
 
         $params = wp_parse_args($args, $defaults);
 
         // API isteği
-        $response = $this->make_request('/v1/products', $params);
+        $response = $this->make_request('/products', $params);
 
         if (is_wp_error($response)) {
             return $response;
@@ -173,7 +173,7 @@ class Kinguin_API {
         }
 
         // API isteği
-        $response = $this->make_request('/v1/products/' . $product_id);
+        $response = $this->make_request('/products/' . $product_id);
 
         if (is_wp_error($response)) {
             return $response;
@@ -186,13 +186,13 @@ class Kinguin_API {
     }
 
     /**
-     * Kategorileri çek
+     * Platform listesini çek
      *
      * @return array|WP_Error
      */
-    public function get_categories() {
+    public function get_platforms() {
         // Cache kontrolü
-        $cache_key = 'kinguin_categories';
+        $cache_key = 'kinguin_platforms';
         $cached = get_transient($cache_key);
 
         if (false !== $cached) {
@@ -200,7 +200,34 @@ class Kinguin_API {
         }
 
         // API isteği
-        $response = $this->make_request('/v1/products/categories');
+        $response = $this->make_request('/platforms');
+
+        if (is_wp_error($response)) {
+            return $response;
+        }
+
+        // Cache'e kaydet
+        set_transient($cache_key, $response, 86400); // 24 saat
+
+        return $response;
+    }
+
+    /**
+     * Tür listesini çek
+     *
+     * @return array|WP_Error
+     */
+    public function get_genres() {
+        // Cache kontrolü
+        $cache_key = 'kinguin_genres';
+        $cached = get_transient($cache_key);
+
+        if (false !== $cached) {
+            return $cached;
+        }
+
+        // API isteği
+        $response = $this->make_request('/genres');
 
         if (is_wp_error($response)) {
             return $response;
