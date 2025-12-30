@@ -141,8 +141,12 @@ class Kinguin_API_Integration {
      * Plugin aktivasyonu
      */
     public function activate() {
+        // Dependencies yükle
+        $this->load_dependencies();
+
         // Custom Post Type kaydet
         Kinguin_CPT::register_post_type();
+        Kinguin_CPT::get_instance()->register_taxonomies();
 
         // Rewrite rules flush
         flush_rewrite_rules();
