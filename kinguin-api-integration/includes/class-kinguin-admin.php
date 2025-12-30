@@ -30,6 +30,7 @@ class Kinguin_Admin {
      * Constructor
      */
     private function __construct() {
+        // Not: Admin menu ana plugin class'ında kayıtlı
         add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_post_kinguin_sync_now', array($this, 'handle_sync_now'));
         add_action('admin_post_kinguin_clear_cache', array($this, 'handle_clear_cache'));
