@@ -58,7 +58,7 @@ class Kinguin_Sync {
         $response = $api->get_products(array(
             'limit' => $limit,
             'page' => 1,
-            'sortBy' => 'popularity',
+            'sortBy' => 'updatedAt',
             'sortType' => 'desc',
         ));
 
