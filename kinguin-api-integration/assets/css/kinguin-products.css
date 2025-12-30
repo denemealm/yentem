@@ -1,0 +1,789 @@
+/**
+ * Kinguin Products CSS
+ * Modern, responsive design with 3:4 aspect ratio
+ */
+
+/* ============================================
+   CONTAINER & LAYOUT
+   ============================================ */
+
+.kinguin-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.kinguin-archive-wrapper,
+.kinguin-single-product {
+    background: #f8f9fa;
+    padding: 40px 0;
+}
+
+/* ============================================
+   ARCHIVE HEADER
+   ============================================ */
+
+.kinguin-archive-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.kinguin-page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #212529;
+    margin: 0 0 10px;
+}
+
+.kinguin-results-count {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ============================================
+   FILTERS
+   ============================================ */
+
+.kinguin-filters {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.kinguin-filter-group {
+    margin-bottom: 15px;
+}
+
+.kinguin-filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.kinguin-filter-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #495057;
+    font-size: 14px;
+}
+
+.kinguin-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.kinguin-filter-btn {
+    padding: 6px 16px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #495057;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.kinguin-filter-btn:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+    color: #212529;
+}
+
+.kinguin-filter-btn.active {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+/* ============================================
+   PRODUCT GRID - RESPONSIVE
+   ============================================ */
+
+.kinguin-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .kinguin-products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .kinguin-products-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1440px) {
+    .kinguin-products-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* ============================================
+   PRODUCT CARD
+   ============================================ */
+
+.kinguin-product-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.kinguin-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.kinguin-product-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ============================================
+   PRODUCT IMAGE - 3:4 ASPECT RATIO (CRITICAL!)
+   ============================================ */
+
+.kinguin-product-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Modern CSS - 3:4 oran */
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Fallback for older browsers */
+@supports not (aspect-ratio: 3 / 4) {
+    .kinguin-product-image {
+        padding-bottom: 133.33%; /* 4/3 * 100 = 133.33% */
+        height: 0;
+    }
+
+    .kinguin-product-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.kinguin-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Kırpmadan doldur */
+    object-position: center top; /* Üstten hizala */
+    transition: transform 0.4s;
+}
+
+.kinguin-product-card:hover .kinguin-product-image img {
+    transform: scale(1.05);
+}
+
+/* Görsel yoksa placeholder */
+.kinguin-no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.kinguin-no-image .dashicons {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: rgba(255,255,255,0.5);
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.kinguin-badge {
+    position: absolute;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kinguin-badge-stock {
+    top: 10px;
+    left: 10px;
+    background: #28a745;
+}
+
+.kinguin-badge-out {
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+}
+
+.kinguin-badge-score {
+    top: 10px;
+    right: 10px;
+    background: #ffc107;
+    color: #000;
+    font-weight: 700;
+    min-width: 32px;
+    text-align: center;
+}
+
+/* ============================================
+   PRODUCT INFO
+   ============================================ */
+
+.kinguin-product-info {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.kinguin-platform {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.kinguin-product-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.kinguin-product-excerpt {
+    font-size: 13px;
+    color: #6c757d;
+    line-height: 1.4;
+    margin: 0 0 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.kinguin-product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #e9ecef;
+}
+
+.kinguin-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+.kinguin-price small {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6c757d;
+    margin-left: 2px;
+}
+
+.kinguin-view-btn {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.kinguin-product-card:hover .kinguin-view-btn {
+    color: #0d6efd;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+.kinguin-pagination {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.kinguin-pagination .page-numbers {
+    display: inline-flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.kinguin-pagination .page-numbers li {
+    display: inline-block;
+}
+
+.kinguin-pagination a,
+.kinguin-pagination span {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: #495057;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.kinguin-pagination a:hover {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.kinguin-pagination .current {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ============================================
+   NO PRODUCTS
+   ============================================ */
+
+.kinguin-no-products {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 12px;
+}
+
+.kinguin-no-products h2 {
+    margin: 20px 0 10px;
+    color: #495057;
+}
+
+.kinguin-no-products p {
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.kinguin-no-products .button {
+    display: inline-block;
+    padding: 10px 24px;
+    background: #0d6efd;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* ============================================
+   SINGLE PRODUCT PAGE
+   ============================================ */
+
+.kinguin-breadcrumb {
+    padding: 15px 0;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.kinguin-breadcrumb a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.kinguin-breadcrumb span {
+    margin: 0 8px;
+}
+
+.kinguin-product-main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+    .kinguin-product-main {
+        grid-template-columns: 1.2fr 1fr;
+    }
+}
+
+.kinguin-product-media {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.kinguin-featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.kinguin-no-image-large {
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+}
+
+.kinguin-no-image-large .dashicons {
+    font-size: 120px;
+    width: 120px;
+    height: 120px;
+    color: rgba(255,255,255,0.4);
+}
+
+.kinguin-product-sidebar {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.kinguin-single-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #212529;
+    margin: 0 0 20px;
+    line-height: 1.3;
+}
+
+.kinguin-meta-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.kinguin-badge-platform,
+.kinguin-badge-metacritic,
+.kinguin-badge-age {
+    position: static;
+    background: #6c757d;
+}
+
+.kinguin-badge-metacritic {
+    background: #ffc107;
+    color: #000;
+}
+
+.kinguin-price-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.kinguin-price-large {
+    font-size: 36px;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 10px;
+}
+
+.kinguin-currency {
+    font-size: 18px;
+    font-weight: 500;
+    color: #6c757d;
+    margin-left: 5px;
+}
+
+.kinguin-stock-status {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.kinguin-stock-status.in-stock {
+    color: #28a745;
+}
+
+.kinguin-stock-status.out-of-stock {
+    color: #dc3545;
+}
+
+.kinguin-purchase-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.kinguin-btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.kinguin-btn-primary {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.kinguin-btn-primary:hover {
+    background: #0b5ed7;
+}
+
+.kinguin-btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.kinguin-btn-secondary:hover {
+    background: #5a6268;
+}
+
+.kinguin-btn-disabled {
+    background: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.kinguin-product-features {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.kinguin-product-features h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 15px;
+    color: #212529;
+}
+
+.kinguin-product-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.kinguin-product-features li {
+    padding: 8px 0;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 14px;
+    color: #495057;
+}
+
+.kinguin-product-features li:last-child {
+    border-bottom: none;
+}
+
+.kinguin-social-share {
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.kinguin-social-share p {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: #495057;
+}
+
+.kinguin-share-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.kinguin-share-btn:hover {
+    opacity: 0.8;
+}
+
+.kinguin-share-btn.facebook {
+    background: #1877f2;
+}
+
+.kinguin-share-btn.twitter {
+    background: #1da1f2;
+}
+
+.kinguin-share-btn.whatsapp {
+    background: #25d366;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.kinguin-product-details {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+}
+
+.kinguin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.kinguin-tab-btn {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 15px;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: -2px;
+}
+
+.kinguin-tab-btn:hover {
+    color: #0d6efd;
+}
+
+.kinguin-tab-btn.active {
+    color: #0d6efd;
+    border-bottom-color: #0d6efd;
+}
+
+.kinguin-tab-content {
+    display: none;
+}
+
+.kinguin-tab-content.active {
+    display: block;
+}
+
+.kinguin-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #495057;
+}
+
+.kinguin-details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.kinguin-details-table th {
+    width: 30%;
+    text-align: left;
+    padding: 12px;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.kinguin-details-table td {
+    padding: 12px;
+    color: #6c757d;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* ============================================
+   RELATED PRODUCTS
+   ============================================ */
+
+.kinguin-related-products {
+    margin-top: 40px;
+}
+
+.kinguin-related-products h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #212529;
+}
+
+/* ============================================
+   RESPONSIVE MOBILE
+   ============================================ */
+
+@media (max-width: 767px) {
+    .kinguin-archive-wrapper,
+    .kinguin-single-product {
+        padding: 20px 0;
+    }
+
+    .kinguin-page-title {
+        font-size: 24px;
+    }
+
+    .kinguin-single-title {
+        font-size: 22px;
+    }
+
+    .kinguin-price-large {
+        font-size: 28px;
+    }
+
+    .kinguin-filter-buttons {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 5px;
+    }
+
+    .kinguin-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+
+    .kinguin-tab-btn {
+        white-space: nowrap;
+    }
+}
