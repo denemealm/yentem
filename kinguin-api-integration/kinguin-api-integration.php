@@ -73,6 +73,9 @@ class Kinguin_API_Integration {
         // Init hook
         add_action('init', array($this, 'init'));
 
+        // Admin menu - BU ÖNEMLİ!
+        add_action('admin_menu', array($this, 'add_admin_menu'));
+
         // Admin hooks
         if (is_admin()) {
             Kinguin_Admin::get_instance();
@@ -81,6 +84,21 @@ class Kinguin_API_Integration {
         // Frontend hooks
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_filter('template_include', array($this, 'template_loader'));
+    }
+
+    /**
+     * Admin menü ekle
+     */
+    public function add_admin_menu() {
+        add_menu_page(
+            'Kinguin Ayarları',
+            'Kinguin',
+            'manage_options',
+            'kinguin-settings',
+            array(Kinguin_Admin::get_instance(), 'render_settings_page'),
+            'dashicons-games',
+            58
+        );
     }
 
     /**

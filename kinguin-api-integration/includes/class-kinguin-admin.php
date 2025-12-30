@@ -39,22 +39,6 @@ class Kinguin_Admin {
     }
 
     /**
-     * Admin menüsü ekle
-     */
-    public function add_admin_menu() {
-        // Üst seviye menü
-        add_menu_page(
-            'Kinguin Ayarları',           // Page title
-            'Kinguin',                     // Menu title
-            'manage_options',              // Capability
-            'kinguin-settings',            // Menu slug
-            array($this, 'render_settings_page'), // Callback
-            'dashicons-games',             // Icon
-            58                             // Position
-        );
-    }
-
-    /**
      * Ayarları kaydet
      */
     public function register_settings() {
