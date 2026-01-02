@@ -115,8 +115,18 @@ class Kinguin_Product_Importer {
             ');
 
             wp_enqueue_script('kinguin-admin-script', false, ['jquery'], '1.0.0', true);
+
+            // AJAX URL ve nonce'u JavaScript'e aktar
+            wp_localize_script('kinguin-admin-script', 'kinguinAdmin', [
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('kinguin_import')
+            ]);
+
             wp_add_inline_script('kinguin-admin-script', '
                 jQuery(document).ready(function($) {
+                    console.log("Kinguin Importer loaded");
+                    console.log("AJAX URL:", kinguinAdmin.ajax_url);
+
                     // Tab switching
                     $(".kinguin-tab").on("click", function() {
                         var tab = $(this).data("tab");
@@ -127,7 +137,10 @@ class Kinguin_Product_Importer {
                     });
 
                     // Import products
-                    $("#kinguin-import-btn").on("click", function() {
+                    $("#kinguin-import-btn").on("click", function(e) {
+                        e.preventDefault();
+                        console.log("Import button clicked");
+
                         var btn = $(this);
                         var limit = $("#kinguin-limit").val();
                         var page = $("#kinguin-page").val();
@@ -140,8 +153,10 @@ class Kinguin_Product_Importer {
 
                         addLog("İçe aktarma başlatıldı...", "info");
 
+                        console.log("AJAX request starting...");
+
                         $.ajax({
-                            url: ajaxurl,
+                            url: kinguinAdmin.ajax_url,
                             type: "POST",
                             data: {
                                 action: "kinguin_import_products",
@@ -149,15 +164,16 @@ class Kinguin_Product_Importer {
                                 page: page,
                                 name: name,
                                 platform: platform,
-                                nonce: "' . wp_create_nonce('kinguin_import') . '"
+                                nonce: kinguinAdmin.nonce
                             },
                             success: function(response) {
+                                console.log("AJAX response:", response);
                                 if (response.success) {
                                     var data = response.data;
                                     addLog("✓ Başarılı: " + data.imported + " ürün içe aktarıldı", "success");
                                     addLog("Toplam bulunan: " + data.total_found, "info");
 
-                                    if (data.errors.length > 0) {
+                                    if (data.errors && data.errors.length > 0) {
                                         addLog("Hatalar:", "error");
                                         data.errors.forEach(function(error) {
                                             addLog("  - " + error, "error");
@@ -166,11 +182,17 @@ class Kinguin_Product_Importer {
 
                                     updateStats(data);
                                 } else {
-                                    addLog("✗ Hata: " + response.data.message, "error");
+                                    var errorMsg = response.data && response.data.message ? response.data.message : "Bilinmeyen hata";
+                                    addLog("✗ Hata: " + errorMsg, "error");
                                 }
                             },
                             error: function(xhr, status, error) {
+                                console.error("AJAX error:", xhr, status, error);
                                 addLog("✗ AJAX Hatası: " + error, "error");
+                                addLog("Status: " + status, "error");
+                                if (xhr.responseText) {
+                                    addLog("Response: " + xhr.responseText.substring(0, 200), "error");
+                                }
                             },
                             complete: function() {
                                 btn.prop("disabled", false).text("Ürünleri İçe Aktar");
@@ -182,21 +204,19 @@ class Kinguin_Product_Importer {
                     function addLog(message, type) {
                         var logClass = "kinguin-log-" + (type || "info");
                         $(".kinguin-log").append("<div class=\"kinguin-log-item " + logClass + "\">" + message + "</div>");
-                        $(".kinguin-log").scrollTop($(".kinguin-log")[0].scrollHeight);
+                        var logDiv = $(".kinguin-log")[0];
+                        if (logDiv) {
+                            logDiv.scrollTop = logDiv.scrollHeight;
+                        }
                     }
 
                     function updateStats(data) {
-                        $("#stat-imported").text(data.imported);
-                        $("#stat-total").text(data.total_found);
-                        $("#stat-errors").text(data.errors.length);
+                        $("#stat-imported").text(data.imported || 0);
+                        $("#stat-total").text(data.total_found || 0);
+                        $("#stat-errors").text(data.errors ? data.errors.length : 0);
                     }
                 });
             ');
-
-            wp_localize_script('kinguin-admin-script', 'kinguinAdmin', [
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('kinguin_import')
-            ]);
         }
     }
 
